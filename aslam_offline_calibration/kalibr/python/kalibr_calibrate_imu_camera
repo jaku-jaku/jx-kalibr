@@ -72,6 +72,7 @@ def parseArgs():
     groupData.add_argument('--bag-freq', metavar='bag_freq', type=float, help='Frequency to extract features at [hz]')
     groupData.add_argument('--perform-synchronization',  action='store_true', dest='perform_synchronization', \
                           help='Perform a clock synchronization according to \'Clock synchronization algorithms for network measurements\' by Zhang et al. (2002).')
+    groupData.add_argument('--tag', dest='tag', default="", help='The prefix tag for the output files.')
     
     #configuration files
     groupCam = parser.add_argument_group('Camera system configuration')
@@ -215,7 +216,7 @@ def main():
     util.printResults(iCal, withCov=parsed.recover_cov)
     print("")
 
-    bagtag = os.path.splitext(parsed.bagfile[0])[0]
+    bagtag = os.path.splitext(parsed.bagfile[0])[0] + "_{0}".format(parsed.tag)
     yamlFilename = bagtag + "-camchain-imucam.yaml"
     iCal.saveCamChainParametersYaml(yamlFilename)
     print("Results written to:")
